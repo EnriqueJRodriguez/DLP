@@ -1,7 +1,45 @@
 grammar Pmm;	
 
-program: 
+program: (definition)* EOF
        ;
+
+definition: variable_definition
+          | function_defnition
+          ;
+
+variable_definition: ID (','ID)* ':' type
+                   ;
+
+statement :expression '=' expression ';'
+		| 'print' expression(','expression)*';'
+		| 'input' expression (',' expression )* ';'
+		| 'return' expression ';'
+		| 'if' expression ':' ('{' (statement )+ '}'| statement | '{' statement '}') ('else' ('{' (statement )+ '}'| statement ) |'{' statement  '}')?
+		| 'while' expression ':' ('{' (statement )+ '}'| statement )
+		| ID '(' (expression (',' expression )*)? ')'';'
+		;
+
+expression :'(' expression ')'
+		| ID '('(expression (',' expression )*)? ')'
+		| expression '[' expression']'
+		| expression '.' ID
+		| '(' simpletype ')' expression
+		| '-' expression
+		| '!' expression
+		| expression ('*'|'/'|'%') expression
+		| expression ('+'|'-') expression
+		| expression ('>'|'>='|'<'|'<='|'!='|'==') expression
+		| expression ('&&'|'||') expression
+		| INT_CONSTANT
+		| REAL_CONSTANT
+		| CHAR_CONSTANT
+		| ID
+		;
+
+simpletype:'int'
+ 		|'double'
+ 		|'char'
+ 	    ;
   		 
 TRASH: [ \r\n\t] -> skip;
 

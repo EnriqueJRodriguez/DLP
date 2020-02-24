@@ -1,6 +1,6 @@
 grammar Pmm;	
 
-program: 
+program: EOF
        ;
   		 
 TRASH: [ \r\n\t] -> skip;

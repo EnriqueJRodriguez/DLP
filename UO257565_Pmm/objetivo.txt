@@ -1,0 +1,1 @@
+Implementar un analizador sintáctico mediante ANTLR. El lenguaje esta descrito en el fichero descripcion.txt, y se dispone de un ejemplo en input.txt. 
