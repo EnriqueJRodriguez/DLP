@@ -1,42 +1,47 @@
 grammar Pmm;	
 
-program: (definition)* EOF
-       ;
+program: ( variable_definition| function_definition)* EOF;
 
-definition: variable_definition
-          | function_defnition
-          ;
+variable_definition : identifiers ':' simple_type ';'
+            	  | identifiers ':' 'struct' '{' (variable_definition )+ '}' ';'
+            	  | identifiers ':' ('[' i1=INT_CONSTANT ']' )+ (simple_type | 'struct' '{' (variable_definition )+ '}' ) ';'
+                  ;
 
-variable_definition: ID (','ID)* ':' type
-                   ;
+identifiers : ID  (',' ID )*;
 
-statement :expression '=' expression ';'
-		| 'print' expression(','expression)*';'
-		| 'input' expression (',' expression )* ';'
-		| 'return' expression ';'
-		| 'if' expression ':' ('{' (statement )+ '}'| statement | '{' statement '}') ('else' ('{' (statement )+ '}'| statement ) |'{' statement  '}')?
-		| 'while' expression ':' ('{' (statement )+ '}'| statement )
-		| ID '(' (expression (',' expression )*)? ')'';'
-		;
+function_definition : 'def' ID '(' (ID ':' simple_type (',' ID ':' simple_type )*)? ')' ':' (simple_type )? '{' function_body '}'
+                    ;
 
-expression :'(' expression ')'
-		| ID '('(expression (',' expression )*)? ')'
-		| expression '[' expression']'
-		| expression '.' ID
-		| '(' simpletype ')' expression
-		| '-' expression
-		| '!' expression
-		| expression ('*'|'/'|'%') expression
-		| expression ('+'|'-') expression
-		| expression ('>'|'>='|'<'|'<='|'!='|'==') expression
-		| expression ('&&'|'||') expression
-		| INT_CONSTANT
-		| REAL_CONSTANT
-		| CHAR_CONSTANT
-		| ID
-		;
+function_body : (variable_definition)*(statement)*;
 
-simpletype:'int'
+
+statement : expression '=' expression ';'
+		  | 'print' expression (',' expression )* ';'
+		  | 'input'expression (',' expression )* ';'
+		  | 'return' expression ';'
+		  | 'if' expression ':' ('{' (statement )+ '}'| statement | '{' statement '}') ('else' ('{' (statement )+ '}'| statement )| '{' statement '}')?
+		  | 'while' expression ':' ('{' (statement )+ '}'| statement )
+		  | ID '('(expression (',' expression )*)? ')'';'
+		  ;
+
+expression :  '(' expression ')'
+		   | ID '('(expression (',' expression  )*)? ')'
+		   | expression '[' expression']'
+		   | expression '.' ID
+		   | '(' simple_type ')' expression
+		   | '-' expression
+		   | '!' expression
+		   | expression ('*'|'/'|'%') expression
+		   | expression ('+'|'-') expression
+		   | expression ('>'|'>='|'<'|'<='|'!='|'==') expression
+		   | expression ('&&'|'||') expression
+		   | INT_CONSTANT
+		   | REAL_CONSTANT
+		   | CHAR_CONSTANT
+		   | ID
+		   ;
+
+simple_type:'int'
  		|'double'
  		|'char'
  	    ;
