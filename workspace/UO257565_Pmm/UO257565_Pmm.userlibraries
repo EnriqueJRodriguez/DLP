@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eclipse-userlibraries>
+  <library name="antlr-4.8-complete">
+    <archive path="C:/Users/EnriqueJRodriguez/git/DLP/UO257565_Pmm/lib/antlr-4.8-complete.jar" />
+  </library>
+  <library name="introspector">
+    <archive path="C:/Users/EnriqueJRodriguez/git/DLP/UO257565_Pmm/lib/introspector.jar" />
+  </library>
+</eclipse-userlibraries>
+
