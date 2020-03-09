@@ -11,7 +11,16 @@ grammar Pmm;
 program returns [Program ast] : {List<Definition> definitions = new ArrayList<Definition>();}
                                     ( vd=variable_definition {for(VariableDefinition v : $vd.ast) {definitions.add(v);}}
                                         | fd=function_definition {definitions.add($fd.ast);}
-                                    )* EOF {$ast = new Program(definitions.get(0).getLine(), definitions.get(0).getColumn(),definitions);};
+                                    )*
+                                    def='def' main='main()' ':' '{' function_body '}' EOF
+                                    {definitions.add(new FunctionDefinition($def.getLine(),$def.getCharPositionInLine()+1,$function_body.ast,
+                                                                        new FunctionType($def.getLine(),$def.getCharPositionInLine()+1,
+                                                                        new VoidType($main.getLine(),$main.getCharPositionInLine()+1),
+                                    									new ArrayList<VariableDefinition>()),"main"));}
+                                    {$ast = new Program(definitions.get(0).getLine(), definitions.get(0).getColumn(),definitions);};
+
+
+
 
 variable_definition returns [List<VariableDefinition> ast = new ArrayList<VariableDefinition>()]: identifiers def=':' st1=simple_type ';'
                                                                                                     { for(String id : $identifiers.ast) {

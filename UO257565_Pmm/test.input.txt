@@ -63,7 +63,7 @@ date:struct {
 };
 
 # Main program
-# def no_main(): { # Uncomment to test
+#def no_main(): { # Uncomment to test
 def main(): { # Uncomment to test
 	characters:[1][2][3]char;
 	MATRIXSIZE = 10;
@@ -87,4 +87,4 @@ def main(): { # Uncomment to test
 	
 	#error:int; # Uncomment to test
 }
-# def no_function(): {} # Uncomment to test
+#def no_function(): {} # Uncomment to test
