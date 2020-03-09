@@ -6,18 +6,18 @@ import java.util.List;
 
 public class Write extends AbstractStatement {
 
-    private List<Expression> expressions;
+    private Expression expression;
 
-    public Write(int line, int column, List<Expression> expressions) {
+    public Write(int line, int column, Expression expression) {
         super(line, column);
-        this.expressions = expressions;
+        this.expression = expression;
     }
 
-    public List<Expression> getExpressions() {
-        return expressions;
+    public Expression getExpression() {
+        return expression;
     }
 
-    public void setExpressions(List<Expression> expressions) {
-        this.expressions = expressions;
+    public void setExpression(Expression expression) {
+        this.expression = expression;
     }
 }

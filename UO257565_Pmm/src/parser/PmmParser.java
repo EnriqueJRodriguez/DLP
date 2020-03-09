@@ -1,4 +1,4 @@
-// Generated from C:/Users/UO257565/Desktop/DLP/UO257565_Pmm/src/parser\Pmm.g4 by ANTLR 4.8
+// Generated from C:/Users/EnriqueJRodriguez/git/DLP/UO257565_Pmm/src/parser\Pmm.g4 by ANTLR 4.8
 package parser;
  import ast.*;
 				  import ast.definitions.*;
@@ -622,7 +622,7 @@ public class PmmParser extends Parser {
 	public static class Function_bodyContext extends ParserRuleContext {
 		public List<Statement> ast = new ArrayList<Statement>();
 		public Variable_definitionContext variable_definition;
-		public StatementContext statement;
+		public StatementContext stm;
 		public List<Variable_definitionContext> variable_definition() {
 			return getRuleContexts(Variable_definitionContext.class);
 		}
@@ -681,8 +681,12 @@ public class PmmParser extends Parser {
 				{
 				{
 				setState(149);
-				((Function_bodyContext)_localctx).statement = statement();
-				_localctx.ast.add(((Function_bodyContext)_localctx).statement.ast);
+				((Function_bodyContext)_localctx).stm = statement();
+
+				                                                                                for(Statement s : ((Function_bodyContext)_localctx).stm.ast){
+				                                                                                    _localctx.ast.add(s);
+				                                                                                }
+				                                                                           
 				}
 				}
 				setState(156);
@@ -703,7 +707,7 @@ public class PmmParser extends Parser {
 	}
 
 	public static class StatementContext extends ParserRuleContext {
-		public Statement ast;
+		public List<Statement> ast = new ArrayList<Statement>();
 		public ExpressionContext e1;
 		public ExpressionContext e2;
 		public StatementContext st1;
@@ -756,7 +760,7 @@ public class PmmParser extends Parser {
 				((StatementContext)_localctx).e2 = expression(0);
 				setState(160);
 				match(T__5);
-				 ((StatementContext)_localctx).ast =  new Assignment(((StatementContext)_localctx).e1.ast.getLine(), ((StatementContext)_localctx).e1.ast.getColumn(),((StatementContext)_localctx).e1.ast, ((StatementContext)_localctx).e2.ast);
+				 _localctx.ast.add(new Assignment(((StatementContext)_localctx).e1.ast.getLine(), ((StatementContext)_localctx).e1.ast.getColumn(),((StatementContext)_localctx).e1.ast, ((StatementContext)_localctx).e2.ast));
 				}
 				break;
 			case 2:
@@ -787,7 +791,11 @@ public class PmmParser extends Parser {
 				}
 				setState(176);
 				match(T__5);
-				((StatementContext)_localctx).ast =  new Write( ((StatementContext)_localctx).e1.ast.getLine(), ((StatementContext)_localctx).e1.ast.getColumn(), parameters);
+
+				                                            for(Expression expression : parameters){
+				                                                _localctx.ast.add(new Write( ((StatementContext)_localctx).e1.ast.getLine(), ((StatementContext)_localctx).e1.ast.getColumn(), expression));
+				                                            }
+						                                
 				}
 				break;
 			case 3:
@@ -818,7 +826,11 @@ public class PmmParser extends Parser {
 				}
 				setState(192);
 				match(T__5);
-				((StatementContext)_localctx).ast =  new Read( ((StatementContext)_localctx).e1.ast.getLine(), ((StatementContext)_localctx).e1.ast.getColumn(), parameters);
+
+				                                            for(Expression expression : parameters){
+				                                                _localctx.ast.add(new Read( ((StatementContext)_localctx).e1.ast.getLine(), ((StatementContext)_localctx).e1.ast.getColumn(), expression));
+				                                            }
+				                                        
 				}
 				break;
 			case 4:
@@ -830,7 +842,7 @@ public class PmmParser extends Parser {
 				((StatementContext)_localctx).e1 = expression(0);
 				setState(197);
 				match(T__5);
-				 ((StatementContext)_localctx).ast =  new ReturnStatement( ((StatementContext)_localctx).e1.ast.getLine(), ((StatementContext)_localctx).e1.ast.getColumn(),((StatementContext)_localctx).e1.ast);
+				 _localctx.ast.add(new ReturnStatement( ((StatementContext)_localctx).e1.ast.getLine(), ((StatementContext)_localctx).e1.ast.getColumn(),((StatementContext)_localctx).e1.ast));
 				}
 				break;
 			case 5:
@@ -859,7 +871,11 @@ public class PmmParser extends Parser {
 						{
 						setState(205);
 						((StatementContext)_localctx).st1 = statement();
-						stms1.add(((StatementContext)_localctx).st1.ast);
+
+						                                                for(Statement s : ((StatementContext)_localctx).st1.ast){
+						                                                        stms1.add(s);
+						                                                }
+						                                            
 						}
 						}
 						setState(210); 
@@ -874,7 +890,11 @@ public class PmmParser extends Parser {
 					{
 					setState(214);
 					((StatementContext)_localctx).st2 = statement();
-					stms1.add(((StatementContext)_localctx).st2.ast);
+
+					                                                for(Statement s : ((StatementContext)_localctx).st2.ast){
+					                                                    stms1.add(s);
+					                                                }
+					                                            
 					}
 					break;
 				case 3:
@@ -883,7 +903,11 @@ public class PmmParser extends Parser {
 					match(T__3);
 					setState(218);
 					((StatementContext)_localctx).st5 = statement();
-					stms1.add(((StatementContext)_localctx).st5.ast);
+
+					                                                for(Statement s : ((StatementContext)_localctx).st5.ast){
+					                                                    stms1.add(s);
+					                                                }
+					                                            
 					setState(220);
 					match(T__4);
 					}
@@ -911,7 +935,11 @@ public class PmmParser extends Parser {
 							{
 							setState(226);
 							((StatementContext)_localctx).st3 = statement();
-							stms2.add(((StatementContext)_localctx).st3.ast);
+
+							                                                for(Statement s : ((StatementContext)_localctx).st3.ast){
+							                                                    stms2.add(s);
+							                                                }
+							                                            
 							}
 							}
 							setState(231); 
@@ -937,7 +965,11 @@ public class PmmParser extends Parser {
 						{
 						setState(235);
 						((StatementContext)_localctx).st4 = statement();
-						stms2.add(((StatementContext)_localctx).st4.ast);
+
+						                                                for(Statement s : ((StatementContext)_localctx).st4.ast){
+						                                                    stms2.add(s);
+						                                                }
+						                                            
 						}
 						break;
 					default:
@@ -951,13 +983,17 @@ public class PmmParser extends Parser {
 					match(T__3);
 					setState(241);
 					((StatementContext)_localctx).st6 = statement();
-					stms2.add(((StatementContext)_localctx).st6.ast);
+
+					                                                for(Statement s : ((StatementContext)_localctx).st6.ast){
+					                                                    stms2.add(s);
+					                                                }
+					                                            
 					setState(243);
 					match(T__4);
 					}
 					break;
 				}
-				((StatementContext)_localctx).ast =  new IfStatement(((StatementContext)_localctx).e1.ast.getLine(), ((StatementContext)_localctx).e1.ast.getColumn(), stms1, stms2, ((StatementContext)_localctx).e1.ast);
+				_localctx.ast.add(new IfStatement(((StatementContext)_localctx).e1.ast.getLine(), ((StatementContext)_localctx).e1.ast.getColumn(), stms1, stms2, ((StatementContext)_localctx).e1.ast));
 				}
 				break;
 			case 6:
@@ -985,7 +1021,11 @@ public class PmmParser extends Parser {
 						{
 						setState(254);
 						((StatementContext)_localctx).st1 = statement();
-						stms.add(((StatementContext)_localctx).st1.ast);
+
+						                                                for(Statement s : ((StatementContext)_localctx).st1.ast){
+						                                                    stms.add(s);
+						                                                }
+						                                            
 						}
 						}
 						setState(259); 
@@ -1011,13 +1051,17 @@ public class PmmParser extends Parser {
 					{
 					setState(263);
 					((StatementContext)_localctx).st2 = statement();
-					stms.add(((StatementContext)_localctx).st2.ast);
+
+					                                                for(Statement s : ((StatementContext)_localctx).st2.ast){
+					                                                    stms.add(s);
+					                                                }
+					                                            
 					}
 					break;
 				default:
 					throw new NoViableAltException(this);
 				}
-				((StatementContext)_localctx).ast =  new While(((StatementContext)_localctx).e1.ast.getLine(), ((StatementContext)_localctx).e1.ast.getColumn(), stms, ((StatementContext)_localctx).e1.ast); 
+				_localctx.ast.add(new While(((StatementContext)_localctx).e1.ast.getLine(), ((StatementContext)_localctx).e1.ast.getColumn(), stms, ((StatementContext)_localctx).e1.ast)); 
 				}
 				break;
 			case 7:
@@ -1060,8 +1104,8 @@ public class PmmParser extends Parser {
 				match(T__11);
 				setState(287);
 				match(T__5);
-				 ((StatementContext)_localctx).ast =  new FunctionInvocation(((StatementContext)_localctx).ID.getLine(), ((StatementContext)_localctx).ID.getCharPositionInLine() + 1,
-				                                                                        parameters,new Variable(((StatementContext)_localctx).ID.getLine(), ((StatementContext)_localctx).ID.getCharPositionInLine() + 1, (((StatementContext)_localctx).ID!=null?((StatementContext)_localctx).ID.getText():null)));
+				 _localctx.ast.add(new FunctionInvocation(((StatementContext)_localctx).ID.getLine(), ((StatementContext)_localctx).ID.getCharPositionInLine() + 1,
+				                                                                        parameters,new Variable(((StatementContext)_localctx).ID.getLine(), ((StatementContext)_localctx).ID.getCharPositionInLine() + 1, (((StatementContext)_localctx).ID!=null?((StatementContext)_localctx).ID.getText():null))));
 				}
 				break;
 			}

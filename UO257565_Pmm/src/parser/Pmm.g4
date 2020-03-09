@@ -98,35 +98,98 @@ function_body returns [List<Statement> ast = new ArrayList<Statement>()]: (varia
                                                                            		$ast.add(vd);
                                                                            		}
                                                                            })*
-                                                                           (statement {$ast.add($statement.ast);})*;
+                                                                           (stm=statement
+                                                                           {
+                                                                                for(Statement s : $stm.ast){
+                                                                                    $ast.add(s);
+                                                                                }
+                                                                           })*
+                                                                           ;
 
 
-statement returns [Statement ast]: e1=expression '=' e2=expression ';'
-                                        { $ast = new Assignment($e1.ast.getLine(), $e1.ast.getColumn(),$e1.ast, $e2.ast);}
+statement returns [List<Statement> ast = new ArrayList<Statement>()]: e1=expression '=' e2=expression ';'
+                                        { $ast.add(new Assignment($e1.ast.getLine(), $e1.ast.getColumn(),$e1.ast, $e2.ast));}
 		                         | 'print' {List<Expression> parameters = new ArrayList<Expression>();}
 		                                e1=expression {parameters.add($e1.ast);} (',' e2=expression {parameters.add($e2.ast);})* ';'
-		                                {$ast = new Write( $e1.ast.getLine(), $e1.ast.getColumn(), parameters);}
+		                                {
+                                            for(Expression expression : parameters){
+                                                $ast.add(new Write( $e1.ast.getLine(), $e1.ast.getColumn(), expression));
+                                            }
+		                                }
 		                         | 'input' {List<Expression> parameters = new ArrayList<Expression>();}
                                  	    e1=expression {parameters.add($e1.ast);} (',' e2=expression {parameters.add($e2.ast);})* ';'
-                                 	    {$ast = new Read( $e1.ast.getLine(), $e1.ast.getColumn(), parameters);}
-		                         | 'return' e1=expression ';' { $ast = new ReturnStatement( $e1.ast.getLine(), $e1.ast.getColumn(),$e1.ast);}
+                                 	    {
+                                            for(Expression expression : parameters){
+                                                $ast.add(new Read( $e1.ast.getLine(), $e1.ast.getColumn(), expression));
+                                            }
+                                        }
+		                         | 'return' e1=expression ';' { $ast.add(new ReturnStatement( $e1.ast.getLine(), $e1.ast.getColumn(),$e1.ast));}
 		                         | 'if' e1=expression ':'
 		                                {List<Statement> stms1 = new ArrayList<Statement>();
                                          List<Statement> stms2 = new ArrayList<Statement>();}
-		                                ('{' (st1=statement {stms1.add($st1.ast);})+ '}'
-		                                | st2=statement {stms1.add($st2.ast);}
-		                                | '{' st5=statement {stms1.add($st5.ast);} '}' )
-		                                ('else' ('{' (st3=statement {stms2.add($st3.ast);})+ '}'
-		                                | st4=statement {stms2.add($st4.ast);} )
-		                                | '{' st6=statement {stms2.add($st6.ast);}'}')?
-		                                {$ast = new IfStatement($e1.ast.getLine(), $e1.ast.getColumn(), stms1, stms2, $e1.ast);}
+		                                ('{' (st1=statement
+		                                    {
+                                                for(Statement s : $st1.ast){
+                                                        stms1.add(s);
+                                                }
+                                            }
+		                                )+ '}'
+		                                | st2=statement
+		                                    {
+                                                for(Statement s : $st2.ast){
+                                                    stms1.add(s);
+                                                }
+                                            }
+		                                | '{' st5=statement
+		                                    {
+                                                for(Statement s : $st5.ast){
+                                                    stms1.add(s);
+                                                }
+                                            }
+                                        '}' )
+		                                ('else' ('{' (st3=statement
+		                                    {
+                                                for(Statement s : $st3.ast){
+                                                    stms2.add(s);
+                                                }
+                                            }
+		                                )+ '}'
+		                                | st4=statement
+		                                    {
+                                                for(Statement s : $st4.ast){
+                                                    stms2.add(s);
+                                                }
+                                            }
+		                                )
+		                                | '{' st6=statement
+		                                    {
+                                                for(Statement s : $st6.ast){
+                                                    stms2.add(s);
+                                                }
+                                            }
+		                                '}')?
+		                                {$ast.add(new IfStatement($e1.ast.getLine(), $e1.ast.getColumn(), stms1, stms2, $e1.ast));}
 		                         | 'while' e1=expression {List<Statement> stms = new ArrayList<Statement>();}':'
-		                                ('{' (st1=statement {stms.add($st1.ast);} )+ '}'| st2=statement {stms.add($st2.ast);} )
-		                                {$ast = new While($e1.ast.getLine(), $e1.ast.getColumn(), stms, $e1.ast); }
+		                                ('{' (st1=statement
+		                                    {
+                                                for(Statement s : $st1.ast){
+                                                    stms.add(s);
+                                                }
+                                            }
+		                                )+ '}'
+		                                |
+		                                st2=statement
+		                                    {
+                                                for(Statement s : $st2.ast){
+                                                    stms.add(s);
+                                                }
+                                            }
+		                                )
+		                                {$ast.add(new While($e1.ast.getLine(), $e1.ast.getColumn(), stms, $e1.ast)); }
 		                         | ID '(' {List<Expression> parameters = new ArrayList<Expression>();}
 		                                (e1=expression {parameters.add($e1.ast);} (',' e2=expression {parameters.add($e2.ast);} )*)? ')'';'
-                                        { $ast = new FunctionInvocation($ID.getLine(), $ID.getCharPositionInLine() + 1,
-                                                                        parameters,new Variable($ID.getLine(), $ID.getCharPositionInLine() + 1, $ID.text));}
+                                        { $ast.add(new FunctionInvocation($ID.getLine(), $ID.getCharPositionInLine() + 1,
+                                                                        parameters,new Variable($ID.getLine(), $ID.getCharPositionInLine() + 1, $ID.text)));}
 		                         ;
 
 expression returns [Expression ast] :  '(' e1=expression ')' { $ast = $e1.ast; }
