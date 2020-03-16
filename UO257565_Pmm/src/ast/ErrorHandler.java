@@ -3,6 +3,7 @@ package ast;
 import ast.types.ErrorType;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ErrorHandler {
@@ -10,7 +11,9 @@ public class ErrorHandler {
     private List<ErrorType> errors;
     private static ErrorHandler staticInstance;
 
-    public ErrorHandler(){}
+    public ErrorHandler(){
+        this.errors = new ArrayList<ErrorType>();
+    }
 
     public static ErrorHandler getInstance() {
         if (staticInstance == null) {

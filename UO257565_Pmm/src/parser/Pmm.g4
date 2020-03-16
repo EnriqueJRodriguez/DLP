@@ -33,9 +33,12 @@ variable_definition returns [List<VariableDefinition> ast = new ArrayList<Variab
                                                                                                      List<FieldDefinition> fields = new ArrayList<FieldDefinition>();}
             	                                                                                    '{' (vds=variable_definition
             	                                                                                        {for(VariableDefinition vd : $vds.ast) {
-                                                                                                        	  variables.add(vd);
-                                                                                                        	  fields.add(new FieldDefinition(vd.getLine(), vd.getColumn(),
-                                                                                                        	                                 vd.getName(), vd.getType()));
+            	                                                                                            if(variables.contains(vd)) {
+                                                                                                            	new ErrorType(vd.getLine(), vd.getColumn(), "Variable " + vd.getName() +" repeated");
+                                                                                                            } else{
+                                                                                                        	    variables.add(vd);
+                                                                                                        	    fields.add(new FieldDefinition(vd.getLine(), vd.getColumn(), vd.getName(), vd.getType()));
+                                                                                                        	  }
                                                                                                         	}
                                                                                                         }
             	                                                                                    )+ '}' ';'
@@ -80,7 +83,13 @@ variable_definition returns [List<VariableDefinition> ast = new ArrayList<Variab
                                                                                                     }
                                                                                                 ;
 
-identifiers returns [List<String> ast = new ArrayList<String>()] : id1=ID  {$ast.add($id1.text);} (',' id2=ID {$ast.add($id2.text);} )*;
+identifiers returns [List<String> ast = new ArrayList<String>()] : id1=ID  {$ast.add($id1.text);}
+                                                                   (',' id2=ID
+                                                                   {if($ast.contains($id2.text)) {
+                                                                    new ErrorType($id1.getLine(), $id1.getCharPositionInLine() + 1, "Variable " + $id2.text +" repeated");
+                                                                   } else {
+                                                                     $ast.add($id2.text);
+                                                                   }})*;
 
 function_definition returns [FunctionDefinition ast] : def='def' name=ID '(' {List<VariableDefinition> variables = new ArrayList<VariableDefinition>();}
                                                            (id1=ID ':' st1=simple_type {variables.add(new VariableDefinition($id1.getLine(), $id1.getCharPositionInLine() + 1,$id1.text,$st1.ast));}

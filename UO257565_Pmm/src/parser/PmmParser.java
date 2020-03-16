@@ -303,9 +303,12 @@ public class PmmParser extends Parser {
 					setState(49);
 					((Variable_definitionContext)_localctx).vds = variable_definition();
 					for(VariableDefinition vd : ((Variable_definitionContext)_localctx).vds.ast) {
-					                                                                                                        	  variables.add(vd);
-					                                                                                                        	  fields.add(new FieldDefinition(vd.getLine(), vd.getColumn(),
-					                                                                                                        	                                 vd.getName(), vd.getType()));
+					            	                                                                                            if(variables.contains(vd)) {
+					                                                                                                            	new ErrorType(vd.getLine(), vd.getColumn(), "Variable " + vd.getName() +" repeated");
+					                                                                                                            } else{
+					                                                                                                        	    variables.add(vd);
+					                                                                                                        	    fields.add(new FieldDefinition(vd.getLine(), vd.getColumn(), vd.getName(), vd.getType()));
+					                                                                                                        	  }
 					                                                                                                        	}
 					                                                                                                        
 					}
@@ -476,7 +479,11 @@ public class PmmParser extends Parser {
 				match(T__9);
 				setState(98);
 				((IdentifiersContext)_localctx).id2 = match(ID);
-				_localctx.ast.add((((IdentifiersContext)_localctx).id2!=null?((IdentifiersContext)_localctx).id2.getText():null));
+				if(_localctx.ast.contains((((IdentifiersContext)_localctx).id2!=null?((IdentifiersContext)_localctx).id2.getText():null))) {
+				                                                                    new ErrorType(((IdentifiersContext)_localctx).id1.getLine(), ((IdentifiersContext)_localctx).id1.getCharPositionInLine() + 1, "Variable " + (((IdentifiersContext)_localctx).id2!=null?((IdentifiersContext)_localctx).id2.getText():null) +" repeated");
+				                                                                   } else {
+				                                                                     _localctx.ast.add((((IdentifiersContext)_localctx).id2!=null?((IdentifiersContext)_localctx).id2.getText():null));
+				                                                                   }
 				}
 				}
 				setState(104);
