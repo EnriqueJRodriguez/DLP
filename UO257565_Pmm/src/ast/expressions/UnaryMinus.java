@@ -1,5 +1,7 @@
 package ast.expressions;
 
+import visitor.Visitor;
+
 public class UnaryMinus extends AbstractExpression {
 
     private Expression operand;
@@ -15,5 +17,10 @@ public class UnaryMinus extends AbstractExpression {
 
     public void setOperand(Expression operand) {
         this.operand = operand;
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP parameter) {
+        return visitor.visit(this, parameter);
     }
 }

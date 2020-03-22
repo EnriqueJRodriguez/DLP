@@ -1,6 +1,7 @@
 package ast.expressions;
 
 import ast.definitions.Definition;
+import visitor.Visitor;
 
 public class Variable extends AbstractExpression {
 
@@ -26,5 +27,10 @@ public class Variable extends AbstractExpression {
 
     public void setDefinition(Definition definition) {
         this.definition = definition;
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP parameter) {
+        return visitor.visit(this, parameter);
     }
 }

@@ -2,6 +2,7 @@ package ast.definitions;
 
 import ast.statements.Statement;
 import ast.types.Type;
+import visitor.Visitor;
 
 import java.util.List;
 
@@ -28,5 +29,10 @@ public class FunctionDefinition extends AbstractDefinition implements Statement,
      */
     public Type getReturnType(){
         return getType();
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP parameter) {
+        return visitor.visit(this, parameter);
     }
 }

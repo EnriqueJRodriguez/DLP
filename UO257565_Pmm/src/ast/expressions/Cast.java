@@ -1,6 +1,7 @@
 package ast.expressions;
 
 import ast.types.Type;
+import visitor.Visitor;
 
 public class Cast extends AbstractExpression {
 
@@ -18,5 +19,10 @@ public class Cast extends AbstractExpression {
 
     public void setExpression(Expression expression) {
         this.expression = expression;
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP parameter) {
+        return visitor.visit(this, parameter);
     }
 }

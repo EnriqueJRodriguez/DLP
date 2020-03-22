@@ -1,6 +1,7 @@
 package ast.expressions;
 
 import ast.types.Type;
+import visitor.Visitor;
 
 public class ArrayAccess extends AbstractExpression {
 
@@ -31,5 +32,10 @@ public class ArrayAccess extends AbstractExpression {
 
     public Type getArrayType(){
         return array.getType();
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP parameter) {
+        return visitor.visit(this, parameter);
     }
 }

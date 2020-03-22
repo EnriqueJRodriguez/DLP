@@ -1,5 +1,7 @@
 package ast.expressions;
 
+import visitor.Visitor;
+
 public class RealLiteral extends AbstractExpression {
 
     private double value;
@@ -15,5 +17,10 @@ public class RealLiteral extends AbstractExpression {
 
     public void setValue(double value) {
         this.value = value;
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP parameter) {
+        return visitor.visit(this, parameter);
     }
 }

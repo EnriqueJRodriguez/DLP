@@ -4,6 +4,7 @@ import ast.expressions.AbstractExpression;
 import ast.expressions.Expression;
 import ast.expressions.Variable;
 import ast.statements.Statement;
+import visitor.Visitor;
 
 import java.util.List;
 
@@ -32,6 +33,11 @@ public class FunctionInvocation extends AbstractExpression implements Statement 
 
     public void setVariable(Variable variable) {
         this.variable = variable;
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP parameter) {
+        return visitor.visit(this, parameter);
     }
 
 }

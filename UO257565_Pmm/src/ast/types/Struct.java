@@ -1,6 +1,7 @@
 package ast.types;
 
 import ast.definitions.FieldDefinition;
+import visitor.Visitor;
 
 import java.util.List;
 
@@ -19,5 +20,10 @@ public class Struct extends AbstractType {
 
     public void setFields(List<FieldDefinition> fields) {
         this.fields = fields;
+    }
+
+    @Override
+    public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP parameter) {
+        return visitor.visit(this, parameter);
     }
 }
