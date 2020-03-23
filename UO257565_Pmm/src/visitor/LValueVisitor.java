@@ -1,9 +1,6 @@
 package visitor;
 
-import ast.expressions.Arithmetic;
-import ast.expressions.ArrayAccess;
-import ast.expressions.Cast;
-import ast.expressions.FieldAccess;
+import ast.expressions.*;
 import ast.statements.Assignment;
 import ast.statements.Read;
 import ast.types.ErrorType;
@@ -12,15 +9,15 @@ public class LValueVisitor extends AbstractVisitor<Void, Void>{
 
     @Override
     public Void visit(Arithmetic a, Void parameter) {
-        a.setLValue(false);
         super.visit(a, parameter);
+        a.setLValue(false);
         return null;
     }
 
     @Override
     public Void visit(ArrayAccess aa, Void parameter) {
-        aa.setLValue(true);
         super.visit(aa, parameter);
+        aa.setLValue(true);
         return null;
     }
 
@@ -35,9 +32,65 @@ public class LValueVisitor extends AbstractVisitor<Void, Void>{
     }
 
     @Override
+    public Void visit(Cast c, Void parameter) {
+        super.visit(c, parameter);
+        c.setLValue(false);
+        return null;
+    }
+
+    @Override
+    public Void visit(CharLiteral cl, Void parameter) {
+        super.visit(cl, parameter);
+        cl.setLValue(false);
+        return null;
+    }
+
+    @Override
+    public Void visit(Comparison com, Void parameter) {
+        super.visit(com, parameter);
+        com.setLValue(false);
+        return null;
+    }
+
+    @Override
     public Void visit(FieldAccess fila, Void parameter) {
-        fila.setLValue(true);
         super.visit(fila, parameter);
+        fila.setLValue(true);
+        return null;
+    }
+
+    @Override
+    public Void visit(IntLiteral il, Void parameter) {
+        super.visit(il, parameter);
+        il.setLValue(false);
+        return null;
+    }
+
+    @Override
+    public Void visit(Logical l, Void parameter) {
+        super.visit(l, parameter);
+        l.setLValue(false);
+        return null;
+    }
+
+    @Override
+    public Void visit(RealLiteral rl, Void parameter) {
+        super.visit(rl, parameter);
+        rl.setLValue(false);
+        return null;
+    }
+
+    @Override
+    public Void visit(UnaryMinus um, Void parameter) {
+        super.visit(um, parameter);
+        um.setLValue(false);
+        return null;
+    }
+
+    @Override
+    public Void visit(UnaryNegation un, Void parameter) {
+        super.visit(un, parameter);
+        un.setLValue(false);
         return null;
     }
 
@@ -48,6 +101,13 @@ public class LValueVisitor extends AbstractVisitor<Void, Void>{
             new ErrorType(red.getLine(), red.getColumn(), "The expression "+
                     red.getExpression() + " can't be read as an input");
         }
+        return null;
+    }
+
+    @Override
+    public Void visit(Variable v, Void parameter) {
+        super.visit(v, parameter);
+        v.setLValue(true);
         return null;
     }
 }
