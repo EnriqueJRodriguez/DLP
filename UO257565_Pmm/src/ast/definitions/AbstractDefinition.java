@@ -5,9 +5,11 @@ import ast.types.Type;
 
 public abstract class AbstractDefinition extends AbstractASTNode implements Definition{
 
-    private int offset;
+
     private String name;
     private Type type;
+    private int offset;
+    private int scope;
 
     public AbstractDefinition(int line, int column, String name, Type type){
         super(line, column);
@@ -39,5 +41,15 @@ public abstract class AbstractDefinition extends AbstractASTNode implements Defi
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    @Override
+    public int getScope() {
+        return scope;
+    }
+
+    @Override
+    public void setScope(int scope) {
+        this.scope = scope;
     }
 }

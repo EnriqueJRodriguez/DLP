@@ -6,6 +6,7 @@ import ast.Program;
 import ast.ErrorHandler;
 import introspector.model.IntrospectorModel;
 import introspector.view.IntrospectorTree;
+import visitor.IdentificationVisitor;
 import visitor.LValueVisitor;
 
 public class Main {
@@ -25,7 +26,9 @@ public class Main {
 		PmmParser parser = new PmmParser(tokens);	
 		Program ast = parser.program().ast;
 		LValueVisitor lValueVisitor = new LValueVisitor();
+		IdentificationVisitor identificationVisitor = new IdentificationVisitor();
 		ast.accept(lValueVisitor,null);
+		ast.accept(identificationVisitor, null);
 		
 		// * Check errors 
 		if(ErrorHandler.getInstance().anyError()){

@@ -1,6 +1,7 @@
 package ast.definitions;
 
 import ast.statements.Statement;
+import ast.types.FunctionType;
 import ast.types.Type;
 import visitor.Visitor;
 
@@ -28,7 +29,7 @@ public class FunctionDefinition extends AbstractDefinition implements Statement,
      * @return Return type
      */
     public Type getReturnType(){
-        return getType();
+        return ((FunctionType) getType()).getReturnType();
     }
 
     @Override

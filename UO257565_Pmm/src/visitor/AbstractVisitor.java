@@ -27,7 +27,7 @@ public abstract class AbstractVisitor<TP,TR> implements Visitor<TP,TR>{
         for(Statement statement: fund.getStatements()){
             statement.accept(this,parameter);
         }
-        fund.getReturnType().accept(this,parameter);
+        fund.getType().accept(this,parameter);
         return null;
     }
 
