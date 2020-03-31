@@ -27,17 +27,12 @@ public class IdentificationVisitor extends AbstractVisitor<Void,Void>{
 
     @Override
     public Void visit(FunctionDefinition fund, Void parameter) {
-        if(symbolTable.insert(fund)){
-            symbolTable.set();
-            fund.getType().accept(this, parameter);
-            for(Statement statement : fund.getStatements()){
-                statement.accept(this, parameter);
-            }
-            symbolTable.reset();
-        }
-        else{
+        if(!symbolTable.insert(fund)) {
             new ErrorType(fund.getLine(), fund.getColumn(), "The funtion " + fund.getName() + " is already defined.");
         }
+        symbolTable.set();
+        super.visit(fund, parameter);
+        symbolTable.reset();
         return null;
     }
 

@@ -24,10 +24,10 @@ public abstract class AbstractVisitor<TP,TR> implements Visitor<TP,TR>{
 
     @Override
     public TR visit(FunctionDefinition fund, TP parameter) {
+        fund.getType().accept(this,parameter);
         for(Statement statement: fund.getStatements()){
             statement.accept(this,parameter);
         }
-        fund.getType().accept(this,parameter);
         return null;
     }
 
