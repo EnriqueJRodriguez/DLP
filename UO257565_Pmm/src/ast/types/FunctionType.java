@@ -33,6 +33,27 @@ public class FunctionType extends AbstractType {
     }
 
     @Override
+    public Type parenthesis(List<Type> types) {
+        if(types.size() != variableDefinitions.size()){
+            return null;
+        }
+        for(int i=0; i < types.size(); i++){
+            if(!(types.get(i).promotesTo(variableDefinitions.get(i).getType()))){
+                return null;
+            }
+        }
+        return returnType;
+    }
+
+    @Override
+    public String toString() {
+        return "FunctionType{" +
+                "returnType=" + returnType +
+                ", variableDefinitions=" + variableDefinitions +
+                '}';
+    }
+
+    @Override
     public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP parameter) {
         return visitor.visit(this, parameter);
     }

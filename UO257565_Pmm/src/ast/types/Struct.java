@@ -14,12 +14,37 @@ public class Struct extends AbstractType {
         this.fields = FieldDefinitions;
     }
 
+    @Override
+    public Type dot(String name) {
+        FieldDefinition field = getField(name);
+        if(field != null){
+            return field.getType();
+        }
+        return null;
+    }
+
+    public FieldDefinition getField(String name){
+        for(FieldDefinition field : fields){
+            if(field.getName().equals(name)){
+                return field;
+            }
+        }
+        return null;
+    }
+
     public List<FieldDefinition> getFields() {
         return fields;
     }
 
     public void setFields(List<FieldDefinition> fields) {
         this.fields = fields;
+    }
+
+    @Override
+    public String toString() {
+        return "Struct{" +
+                "fields=" + fields +
+                '}';
     }
 
     @Override

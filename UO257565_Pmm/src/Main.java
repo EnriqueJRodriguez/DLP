@@ -7,7 +7,7 @@ import ast.ErrorHandler;
 import introspector.model.IntrospectorModel;
 import introspector.view.IntrospectorTree;
 import visitor.IdentificationVisitor;
-import visitor.LValueVisitor;
+import visitor.TypeCheckingVisitor;
 
 public class Main {
 	
@@ -25,11 +25,11 @@ public class Main {
 		CommonTokenStream tokens = new CommonTokenStream(lexer); 
 		PmmParser parser = new PmmParser(tokens);	
 		Program ast = parser.program().ast;
-		LValueVisitor lValueVisitor = new LValueVisitor();
 		IdentificationVisitor identificationVisitor = new IdentificationVisitor();
-		ast.accept(lValueVisitor,null);
+		TypeCheckingVisitor typeCheckingVisitor = new TypeCheckingVisitor();
 		ast.accept(identificationVisitor, null);
-		
+		ast.accept(typeCheckingVisitor,null);
+
 		// * Check errors 
 		if(ErrorHandler.getInstance().anyError()){
 			// * Show errors
