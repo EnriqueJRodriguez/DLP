@@ -19,7 +19,7 @@ public class Char extends AbstractType {
 
     @Override
     public Type arithmetic(Type t) {
-        if(t.equals(this)) {
+        if(t instanceof Char) {
             return Int.getInstance();
         }
         return super.arithmetic(t);

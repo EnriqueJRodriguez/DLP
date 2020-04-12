@@ -20,7 +20,7 @@ public class Int extends AbstractType {
 
     @Override
     public Type arithmetic(Type t) {
-        if(t.equals(this)) {
+        if(t instanceof Int) {
             return t;
         }
         return super.arithmetic(t);
