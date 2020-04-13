@@ -31,5 +31,7 @@ public interface Type extends ASTNode {
 
     public boolean promotesTo(Type t);
 
+    public void setSize(int size);
+
     public Type squareBrackets(Type t);
 }

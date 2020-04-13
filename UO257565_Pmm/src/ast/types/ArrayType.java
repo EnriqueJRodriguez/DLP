@@ -27,10 +27,12 @@ public class ArrayType extends AbstractType {
         this.type = type;
     }
 
+    @Override
     public int getSize() {
         return size * type.getSize();
     }
 
+    @Override
     public void setSize(int size) {
         this.size = size;
     }

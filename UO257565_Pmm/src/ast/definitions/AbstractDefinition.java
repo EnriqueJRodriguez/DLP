@@ -8,21 +8,12 @@ public abstract class AbstractDefinition extends AbstractASTNode implements Defi
 
     private String name;
     private Type type;
-    private int offset;
     private int scope;
 
     public AbstractDefinition(int line, int column, String name, Type type){
         super(line, column);
         this.name = name;
         this.type = type;
-    }
-
-    public int getOffset() {
-        return offset;
-    }
-
-    public void setOffset(int offset) {
-        this.offset = offset;
     }
 
     @Override

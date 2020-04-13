@@ -8,10 +8,14 @@ import java.util.List;
 public class Struct extends AbstractType {
 
     private List<FieldDefinition> fields;
+    private int size;
 
     public Struct(int line, int column, List<FieldDefinition> FieldDefinitions) {
         super(line, column);
         this.fields = FieldDefinitions;
+        for(FieldDefinition definition: fields){
+            size += definition.getType().getSize();
+        }
     }
 
     @Override
@@ -45,6 +49,11 @@ public class Struct extends AbstractType {
         return "Struct{" +
                 "fields=" + fields +
                 '}';
+    }
+
+    @Override
+    public int getSize() {
+        return size;
     }
 
     @Override

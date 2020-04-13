@@ -9,11 +9,15 @@ public class FunctionType extends AbstractType {
 
     private Type returnType;
     private List<VariableDefinition> variableDefinitions;
+    private int parametersSize;
 
     public FunctionType(int line, int column, Type returnType, List<VariableDefinition> variableDefinitions) {
         super(line, column);
         this.returnType = returnType;
         this.variableDefinitions = variableDefinitions;
+        for(VariableDefinition definition: variableDefinitions){
+            this.parametersSize += definition.getType().getSize();
+        }
     }
 
     public Type getReturnType() {
@@ -51,6 +55,11 @@ public class FunctionType extends AbstractType {
                 "returnType=" + returnType +
                 ", variableDefinitions=" + variableDefinitions +
                 '}';
+    }
+
+    @Override
+    public int getSize() {
+        return parametersSize;
     }
 
     @Override

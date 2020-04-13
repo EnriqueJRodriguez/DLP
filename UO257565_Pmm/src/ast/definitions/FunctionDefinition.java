@@ -10,6 +10,7 @@ import java.util.List;
 public class FunctionDefinition extends AbstractDefinition implements Statement, Definition {
 
     private List<Statement> statements;
+    private int localvariablesBytes;
 
     public FunctionDefinition(int line, int column,List<Statement> statements,Type type, String name) {
         super(line, column, name, type);
@@ -30,6 +31,14 @@ public class FunctionDefinition extends AbstractDefinition implements Statement,
      */
     public Type getReturnType(){
         return ((FunctionType) getType()).getReturnType();
+    }
+
+    public int getLocalvariablesBytes() {
+        return localvariablesBytes;
+    }
+
+    public void setLocalvariablesBytes(int localvariablesBytes) {
+        this.localvariablesBytes = localvariablesBytes;
     }
 
     @Override

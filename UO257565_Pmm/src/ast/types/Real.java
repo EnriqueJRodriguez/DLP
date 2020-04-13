@@ -49,6 +49,11 @@ public class Real extends AbstractType {
     }
 
     @Override
+    public int getSize() {
+        return 4;
+    }
+
+    @Override
     public boolean promotesTo(Type t) {
         return t instanceof Real;
     }

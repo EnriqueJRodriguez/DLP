@@ -10,8 +10,6 @@ public abstract class AbstractType extends AbstractASTNode implements Type{
         super(line, column);
     }
 
-
-
     @Override
     public Type arithmetic(Type t) {
         if (t instanceof ErrorType) {
@@ -43,7 +41,7 @@ public abstract class AbstractType extends AbstractASTNode implements Type{
 
     @Override
     public int getSize() {
-        return 0;
+        throw new RuntimeException("Size must accesed on the concrete type class");
     }
 
     @Override
@@ -82,6 +80,11 @@ public abstract class AbstractType extends AbstractASTNode implements Type{
     @Override
     public boolean promotesTo(Type t) {
         return false;
+    }
+
+    @Override
+    public void setSize(int size){
+        throw new RuntimeException("Size must defined on the concrete type class");
     }
 
     @Override

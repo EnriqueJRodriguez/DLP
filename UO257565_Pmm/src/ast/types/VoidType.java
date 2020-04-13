@@ -4,7 +4,7 @@ import visitor.Visitor;
 
 public class VoidType extends AbstractType {
 
-
+    private int size = 0;
     public VoidType(int line, int column) {
         super(line, column);
     }
@@ -12,6 +12,11 @@ public class VoidType extends AbstractType {
     @Override
     public String toString() {
         return "void";
+    }
+
+    @Override
+    public int getSize() {
+        return size;
     }
 
     @Override

@@ -1,3 +1,4 @@
+import codegeneration.OffsetVisitor;
 import parser.*;
 
 import org.antlr.v4.runtime.*;
@@ -26,9 +27,11 @@ public class Main {
 		PmmParser parser = new PmmParser(tokens);	
 		Program ast = parser.program().ast;
 		IdentificationVisitor identificationVisitor = new IdentificationVisitor();
+		OffsetVisitor offsetVisitor = new OffsetVisitor();
 		TypeCheckingVisitor typeCheckingVisitor = new TypeCheckingVisitor();
 		ast.accept(identificationVisitor, null);
 		ast.accept(typeCheckingVisitor,null);
+		ast.accept(offsetVisitor, null);
 
 		// * Check errors 
 		if(ErrorHandler.getInstance().anyError()){
