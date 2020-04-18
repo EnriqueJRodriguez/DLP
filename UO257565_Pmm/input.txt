@@ -3,9 +3,14 @@
 i: int;
 r: double;
 c: char;
+date: struct  {
+  day:int;
+  month:int;
+  year: double;
+};
 
 # Functions
-def f(pi:int, pr:double ): int {
+def f(pi:int, pr:double): int {
   lr:double;
   li:int;
   li = pi;

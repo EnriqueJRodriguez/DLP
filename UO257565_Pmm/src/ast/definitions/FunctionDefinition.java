@@ -10,7 +10,7 @@ import java.util.List;
 public class FunctionDefinition extends AbstractDefinition implements Statement, Definition {
 
     private List<Statement> statements;
-    private int localvariablesBytes;
+    private int localVariablesBytes;
 
     public FunctionDefinition(int line, int column,List<Statement> statements,Type type, String name) {
         super(line, column, name, type);
@@ -33,12 +33,12 @@ public class FunctionDefinition extends AbstractDefinition implements Statement,
         return ((FunctionType) getType()).getReturnType();
     }
 
-    public int getLocalvariablesBytes() {
-        return localvariablesBytes;
+    public int getLocalVariablesBytes() {
+        return localVariablesBytes;
     }
 
-    public void setLocalvariablesBytes(int localvariablesBytes) {
-        this.localvariablesBytes = localvariablesBytes;
+    public void setLocalVariablesBytes(int localVariablesBytes) {
+        this.localVariablesBytes = localVariablesBytes;
     }
 
     @Override

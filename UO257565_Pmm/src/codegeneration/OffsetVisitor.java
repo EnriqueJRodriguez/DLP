@@ -8,10 +8,11 @@ import ast.types.FunctionType;
 import ast.types.Struct;
 import visitor.AbstractVisitor;
 
-public class OffsetVisitor extends AbstractVisitor {
+public class OffsetVisitor extends AbstractVisitor<Boolean, Void> {
 
     private int globalVariablesCounter;
     private int localVariablesCounter;
+    private int parametersSize;
 
     public OffsetVisitor() {
         super();
@@ -20,43 +21,43 @@ public class OffsetVisitor extends AbstractVisitor {
     }
 
     @Override
-    public Object visit(VariableDefinition vd, Object parameter) {
+    public Void visit(VariableDefinition vd, Boolean parameter) {
         vd.getType().accept(this, parameter);
         if(vd.getScope() == 0){
             vd.setOffset(globalVariablesCounter);
             globalVariablesCounter += vd.getType().getSize();
-        } else if ( parameter == null || !(boolean)parameter){
+        } else if (parameter == null || !parameter){
             localVariablesCounter += vd.getType().getSize();
             vd.setOffset(-localVariablesCounter);
+        } else {
+            vd.setOffset(4 + parametersSize);
         }
         return null;
     }
 
     @Override
-    public Object visit(FunctionDefinition fund, Object parameter) {
+    public Void visit(FunctionDefinition fund, Boolean parameter) {
         localVariablesCounter = 0;
         for(Statement statement: fund.getStatements()){
             statement.accept(this, parameter);
         }
         fund.getType().accept(this, parameter);
-        fund.setLocalvariablesBytes(-1 * localVariablesCounter);
+        fund.setLocalVariablesBytes(localVariablesCounter);
         return null;
     }
 
     @Override
-    public Object visit(FunctionType funt, Object parameter) {
-        int parametersSize = 0;
-        for(int i = funt.getVariableDefinitions().size() -1;
-            i >= 0 ; i--){
+    public Void visit(FunctionType funt, Boolean parameter) {
+        parametersSize = 0;
+        for(int i = funt.getVariableDefinitions().size() -1; i >= 0 ; i--){
             funt.getVariableDefinitions().get(i).accept(this,true);
-            funt.getVariableDefinitions().get(i).setOffset(4 + parametersSize);
             parametersSize += funt.getVariableDefinitions().get(i).getType().getSize();
         }
         return null;
     }
 
     @Override
-    public Object visit(Struct stt, Object parameter) {
+    public Void visit(Struct stt, Boolean parameter) {
         int fieldsSize = 0;
         for(FieldDefinition definition: stt.getFields()){
             definition.accept(this, parameter);

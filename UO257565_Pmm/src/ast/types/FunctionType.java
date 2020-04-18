@@ -59,7 +59,7 @@ public class FunctionType extends AbstractType {
 
     @Override
     public int getSize() {
-        return parametersSize;
+        return parametersSize + returnType.getSize();
     }
 
     @Override

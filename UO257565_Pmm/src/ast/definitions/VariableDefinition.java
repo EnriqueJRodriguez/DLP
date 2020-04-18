@@ -21,14 +21,6 @@ public class VariableDefinition extends AbstractDefinition implements Statement,
         return result;
     }
 
-    public int getOffset() {
-        return offset;
-    }
-
-    public void setOffset(int offset) {
-        this.offset = offset;
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -44,6 +36,14 @@ public class VariableDefinition extends AbstractDefinition implements Statement,
         } else if (!getName().equals(other.getName()))
             return false;
         return true;
+    }
+
+    public int getOffset() {
+        return offset;
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset;
     }
 
     @Override
