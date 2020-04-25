@@ -62,6 +62,11 @@ public class FunctionType extends AbstractType {
         return parametersSize + returnType.getSize();
     }
 
+
+    public int getParametersSize() {
+        return parametersSize;
+    }
+
     @Override
     public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP parameter) {
         return visitor.visit(this, parameter);

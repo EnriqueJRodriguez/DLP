@@ -179,8 +179,14 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void>{
             new ErrorType(red.getLine(), red.getColumn(), "The expression "+
                     red.getExpression().getType() + " can't be read as an input");
         }
+        if(!red.getExpression().getType().isBuiltInType()){
+            new ErrorType(red.getLine(), red.getColumn(), "The expression "+
+                    red.getExpression().getType() + " can't be read as an input");
+        }
         return null;
     }
+
+
 
     @Override
     public Void visit(ReturnStatement rts, Type parameter) {
@@ -211,4 +217,13 @@ public class TypeCheckingVisitor extends AbstractVisitor<Type, Void>{
         return null;
     }
 
+    @Override
+    public Void visit(Write wrt, Type parameter) {
+        super.visit(wrt, parameter);
+        if(!wrt.getExpression().getType().isBuiltInType()){
+            new ErrorType(wrt.getLine(), wrt.getColumn(), "The expression "+
+                    wrt.getExpression().getType() + " can't be printed");
+        }
+        return null;
+    }
 }

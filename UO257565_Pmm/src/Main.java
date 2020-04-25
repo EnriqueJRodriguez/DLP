@@ -1,3 +1,5 @@
+import codegeneration.CodeGenerator;
+import codegeneration.ExecuteCGVisitor;
 import codegeneration.OffsetVisitor;
 import parser.*;
 
@@ -38,7 +40,9 @@ public class Main {
 			// * Show errors
 			ErrorHandler.getInstance().showErrors(System.err);
 		}
-		else{			
+		else{
+			ExecuteCGVisitor exVisitor = new ExecuteCGVisitor(new CodeGenerator(args[0], args[1]));
+			ast.accept(exVisitor, null);
 			// * The AST is shown
 			IntrospectorModel model=new IntrospectorModel("Program", ast);
 			new IntrospectorTree("Introspector", model);

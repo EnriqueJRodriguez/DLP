@@ -78,6 +78,11 @@ public class Int extends AbstractType {
     }
 
     @Override
+    public char suffix() {
+        return 'i';
+    }
+
+    @Override
     public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP parameter) {
         return visitor.visit(this, parameter);
     }

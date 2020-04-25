@@ -59,6 +59,11 @@ public class Char extends AbstractType {
     }
 
     @Override
+    public char suffix() {
+        return 'b';
+    }
+
+    @Override
     public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP parameter) {
         return visitor.visit(this, parameter);
     }

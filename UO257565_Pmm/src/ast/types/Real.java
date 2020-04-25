@@ -54,6 +54,11 @@ public class Real extends AbstractType {
     }
 
     @Override
+    public char suffix() {
+        return 'f';
+    }
+
+    @Override
     public boolean promotesTo(Type t) {
         return t instanceof Real;
     }

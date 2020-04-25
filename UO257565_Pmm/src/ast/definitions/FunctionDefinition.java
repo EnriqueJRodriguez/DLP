@@ -21,6 +21,16 @@ public class FunctionDefinition extends AbstractDefinition implements Statement,
         return statements;
     }
 
+    public int getNumberOfVariableDefinitions(){
+        int i = 0;
+        for(Statement statement : statements){
+            if(statement instanceof VariableDefinition){
+                i++;
+            }
+        }
+        return i;
+    }
+
     public void setStatements(List<Statement> statements) {
         this.statements = statements;
     }
