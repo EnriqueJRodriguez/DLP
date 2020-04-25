@@ -59,8 +59,8 @@ public class CodeGenerator {
         out.flush();
     }
 
-    public void ret(int a, int b, int c) {
-        out.println("\tret\t" + a + ", "+ b + ", "+ c);
+    public void ret(int typeSize, int localVariablesBytes, int parametersSize) {
+        out.println("\tret\t" + typeSize + ", "+ localVariablesBytes + ", "+ parametersSize);
         out.flush();
     }
 
@@ -89,13 +89,13 @@ public class CodeGenerator {
         out.flush();
     }
 
-    public void pushb(char a) {
-        out.println("\tpushb\t" + (int) a);
+    public void pushb(char b) {
+        out.println("\tpushb\t" + (int) b);
         out.flush();
     }
 
-    public void pushf(double a) {
-        out.println("\tpushf\t" + a);
+    public void pushf(double f) {
+        out.println("\tpushf\t" + f);
         out.flush();
     }
 
@@ -109,8 +109,8 @@ public class CodeGenerator {
         out.flush();
     }
 
-    public void arithmetic(String op, char suffix) {
-        switch(op) {
+    public void arithmetic(String operator, char suffix) {
+        switch(operator) {
             case "+":
                 add(suffix);
                 break;
@@ -129,8 +129,8 @@ public class CodeGenerator {
         }
     }
 
-    public void compare(String op, char suffix) {
-        switch(op) {
+    public void compare(String operator, char suffix) {
+        switch(operator) {
             case ">":
                 gt(suffix);
                 break;
@@ -152,8 +152,8 @@ public class CodeGenerator {
         }
     }
 
-    public void logical(String op) {
-        switch(op) {
+    public void logical(String operator) {
+        switch(operator) {
             case "&&":
                 and();
                 break;

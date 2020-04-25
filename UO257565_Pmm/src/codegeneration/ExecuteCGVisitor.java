@@ -160,7 +160,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Definition,Void>{
         rts.getExpression().accept(valueCGVisitor,parameter);
         super.getCodeGenerator().ret(rts.getExpression().getType().getSize(),
                 ((FunctionDefinition)parameter).getLocalVariablesBytes(),
-                ((FunctionType)((FunctionDefinition)parameter).getType()).getParametersSize());
+                ((FunctionType) parameter.getType()).getParametersSize());
         return null;
     }
 
