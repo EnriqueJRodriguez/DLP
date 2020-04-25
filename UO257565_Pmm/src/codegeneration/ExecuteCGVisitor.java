@@ -11,7 +11,7 @@ import ast.types.VoidType;
 
 import java.util.List;
 
-public class ExecuteCGVisitor extends AbstractCGVisitor<Object,Void>{
+public class ExecuteCGVisitor extends AbstractCGVisitor<Definition,Void>{
 
     private ValueCGVisitor valueCGVisitor;
     private AddressCGVisitor addressCGVisitor;
@@ -38,7 +38,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Object,Void>{
      *          execute[[ definition ]]()
      */
     @Override
-    public Void visit(Program p, Object parameter) {
+    public Void visit(Program p, Definition parameter) {
         for(Definition definition : p.getDefinitions()){
             if(definition instanceof VariableDefinition){
                 definition.accept(this, null);
@@ -72,12 +72,12 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Object,Void>{
      *
      */
     @Override
-    public Void visit(FunctionDefinition fund, Object parameter) {
+    public Void visit(FunctionDefinition fund, Definition parameter) {
         super.getCodeGenerator().line(fund.getLine());
         super.getCodeGenerator().label(fund.getName());
         super.getCodeGenerator().comment("Parameters");
         for(VariableDefinition variableDefinition : ((FunctionType)fund.getType()).getVariableDefinitions()){
-            variableDefinition.accept(this,fund);
+            variableDefinition.accept(this,null);
         }
         super.getCodeGenerator().comment("Local variables");
 
@@ -100,7 +100,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Object,Void>{
     }
 
     @Override
-    public Void visit(VariableDefinition vd, Object parameter) {
+    public Void visit(VariableDefinition vd, Definition parameter) {
         super.getCodeGenerator().comment(vd.getType().toString() + " " +
                 vd.getName() + " (offset " + vd.getOffset() +")");
         return null;
@@ -113,7 +113,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Object,Void>{
      * <store> expression1.type.suffix
      */
     @Override
-    public Void visit(Assignment ass, Object parameter) {
+    public Void visit(Assignment ass, Definition parameter) {
         super.getCodeGenerator().line(ass.getLine());
         super.getCodeGenerator().comment("Assignment");
         ass.getLeft().accept(addressCGVisitor, parameter);
@@ -123,12 +123,12 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Object,Void>{
     }
 
     @Override
-    public Void visit(FunctionInvocation funi, Object parameter) {
+    public Void visit(FunctionInvocation funi, Definition parameter) {
         return super.visit(funi, parameter);
     }
 
     @Override
-    public Void visit(IfStatement ifs, Object parameter) {
+    public Void visit(IfStatement ifs, Definition parameter) {
         return super.visit(ifs, parameter);
     }
 
@@ -139,7 +139,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Object,Void>{
      * <store> expression.type.suffix
      */
     @Override
-    public Void visit(Read red, Object parameter) {
+    public Void visit(Read red, Definition parameter) {
         super.getCodeGenerator().line(red.getLine());
         super.getCodeGenerator().comment("Read");
         red.getExpression().accept(addressCGVisitor,parameter);
@@ -154,7 +154,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Object,Void>{
      * <ret> expression.type.size funcDefinition.localVariablesBytes functionType.parametersSize
      */
     @Override
-    public Void visit(ReturnStatement rts, Object parameter) {
+    public Void visit(ReturnStatement rts, Definition parameter) {
         super.getCodeGenerator().line(rts.getLine());
         super.getCodeGenerator().comment("Return");
         rts.getExpression().accept(valueCGVisitor,parameter);
@@ -165,7 +165,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Object,Void>{
     }
 
     @Override
-    public Void visit(While whl, Object parameter) {
+    public Void visit(While whl, Definition parameter) {
         return super.visit(whl, parameter);
     }
 
@@ -175,7 +175,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Object,Void>{
      * <out> expression.type.suffix
      */
     @Override
-    public Void visit(Write wrt, Object parameter) {
+    public Void visit(Write wrt, Definition parameter) {
         super.getCodeGenerator().line(wrt.getLine());
         super.getCodeGenerator().comment("Write");
         wrt.getExpression().accept(valueCGVisitor,parameter);

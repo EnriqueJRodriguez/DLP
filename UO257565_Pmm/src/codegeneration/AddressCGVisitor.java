@@ -1,12 +1,13 @@
 package codegeneration;
 
+import ast.definitions.Definition;
 import ast.definitions.VariableDefinition;
 import ast.expressions.ArrayAccess;
 import ast.expressions.FieldAccess;
 import ast.expressions.Variable;
 import ast.types.Int;
 
-public class AddressCGVisitor extends AbstractCGVisitor<Object,Void>{
+public class AddressCGVisitor extends AbstractCGVisitor<Definition,Void>{
 
     private ValueCGVisitor valueCGVisitor;
 
@@ -28,7 +29,7 @@ public class AddressCGVisitor extends AbstractCGVisitor<Object,Void>{
      *      <addi>
      */
     @Override
-    public Void visit(Variable v, Object parameter) {
+    public Void visit(Variable v, Definition parameter) {
         if( v.getDefinition().getScope() == 0){
             super.getCodeGenerator().pusha(((VariableDefinition)v.getDefinition()).getOffset());
         } else{
@@ -40,12 +41,12 @@ public class AddressCGVisitor extends AbstractCGVisitor<Object,Void>{
     }
 
     @Override
-    public Void visit(ArrayAccess aa, Object parameter) {
+    public Void visit(ArrayAccess aa, Definition parameter) {
         return super.visit(aa, parameter);
     }
 
     @Override
-    public Void visit(FieldAccess fila, Object parameter) {
+    public Void visit(FieldAccess fila, Definition parameter) {
         return super.visit(fila, parameter);
     }
 

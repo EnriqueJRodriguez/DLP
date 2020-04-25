@@ -1,9 +1,10 @@
 package codegeneration;
 
+import ast.definitions.Definition;
 import ast.expressions.*;
 import ast.types.Int;
 
-public class ValueCGVisitor extends AbstractCGVisitor<Object,Void>{
+public class ValueCGVisitor extends AbstractCGVisitor<Definition,Void>{
 
     private AddressCGVisitor addressCGVisitor;
 
@@ -22,7 +23,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<Object,Void>{
      * <arithmetic> operator expression.type
      */
     @Override
-    public Void visit(Arithmetic a, Object parameter) {
+    public Void visit(Arithmetic a, Definition parameter) {
         a.getLeftOperand().accept(this, parameter);
         a.getRightOperand().accept(this, parameter);
         super.getCodeGenerator().arithmetic(a.getOperator(), a.getType().suffix());
@@ -30,7 +31,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<Object,Void>{
     }
 
     @Override
-    public Void visit(ArrayAccess aa, Object parameter) {
+    public Void visit(ArrayAccess aa, Definition parameter) {
         return super.visit(aa, parameter);
     }
 
@@ -40,7 +41,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<Object,Void>{
      * <castTo> expression.casted.type type
      */
     @Override
-    public Void visit(Cast c, Object parameter) {
+    public Void visit(Cast c, Definition parameter) {
         c.getExpression().accept(this,parameter);
         super.getCodeGenerator().castTo(c.getExpression().getType(), c.getType());
         return null;
@@ -51,7 +52,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<Object,Void>{
      *  <pushb> expression.value
      */
     @Override
-    public Void visit(CharLiteral cl, Object parameter) {
+    public Void visit(CharLiteral cl, Definition parameter) {
         super.getCodeGenerator().pushb(cl.getValue());
         return null;
     }
@@ -63,7 +64,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<Object,Void>{
      * <comparison> operator expression.type.suffix
      */
     @Override
-    public Void visit(Comparison com, Object parameter) {
+    public Void visit(Comparison com, Definition parameter) {
         com.getLeftOperand().accept(this, parameter);
         com.getRightOperand().accept(this, parameter);
         super.getCodeGenerator().compare(com.getOperator(), com.getType().suffix());
@@ -71,7 +72,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<Object,Void>{
     }
 
     @Override
-    public Void visit(FieldAccess fila, Object parameter) {
+    public Void visit(FieldAccess fila, Definition parameter) {
         return super.visit(fila, parameter);
     }
 
@@ -80,7 +81,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<Object,Void>{
      *  <pushi> expression.value
      */
     @Override
-    public Void visit(IntLiteral il, Object parameter) {
+    public Void visit(IntLiteral il, Definition parameter) {
         super.getCodeGenerator().pushi(il.getValue());
         return null;
     }
@@ -92,7 +93,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<Object,Void>{
      * <logical> operator expression.type
      */
     @Override
-    public Void visit(Logical l, Object parameter) {
+    public Void visit(Logical l, Definition parameter) {
         l.getLeftOperand().accept(this,parameter);
         l.getRightOperand().accept(this, parameter);
         super.getCodeGenerator().logical(l.getOperator());
@@ -104,7 +105,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<Object,Void>{
      *  <pushf> expression.value
      */
     @Override
-    public Void visit(RealLiteral rl, Object parameter) {
+    public Void visit(RealLiteral rl, Definition parameter) {
         super.getCodeGenerator().pushf(rl.getValue());
         return null;
     }
@@ -117,7 +118,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<Object,Void>{
      * <sub> expression.type.suffix
      */
     @Override
-    public Void visit(UnaryMinus um, Object parameter) {
+    public Void visit(UnaryMinus um, Definition parameter) {
         super.getCodeGenerator().pushi(0);
         super.getCodeGenerator().castTo(Int.getInstance(), um.getType());
         um.getOperand().accept(this, parameter);
@@ -131,7 +132,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<Object,Void>{
      * <not>
      */
     @Override
-    public Void visit(UnaryNegation un, Object parameter) {
+    public Void visit(UnaryNegation un, Definition parameter) {
         un.getOperand().accept(this,parameter);
         super.getCodeGenerator().not();
         return null;
@@ -143,7 +144,7 @@ public class ValueCGVisitor extends AbstractCGVisitor<Object,Void>{
      * <load> expression.type.suffix
      */
     @Override
-    public Void visit(Variable v, Object parameter) {
+    public Void visit(Variable v, Definition parameter) {
         v.accept(addressCGVisitor, parameter);
         super.getCodeGenerator().load(v.getDefinition().getType().suffix());
         return null;
