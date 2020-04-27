@@ -59,6 +59,11 @@ public class CodeGenerator {
         out.flush();
     }
 
+    public void call(String s) {
+        out.println("\tcall\t" + s);
+        out.flush();
+    }
+
     public void ret(int typeSize, int localVariablesBytes, int parametersSize) {
         out.println("\tret\t" + typeSize + ", "+ localVariablesBytes + ", "+ parametersSize);
         out.flush();
@@ -81,6 +86,16 @@ public class CodeGenerator {
 
     public void in(char suffix) {
         out.println("\tin" + suffix);
+        out.flush();
+    }
+
+    public void pop(char suffix) {
+        out.println("\tpop" + suffix);
+        out.flush();
+    }
+
+    public void dup(char suffix) {
+        out.println("\tdup" + suffix);
         out.flush();
     }
 
@@ -271,6 +286,21 @@ public class CodeGenerator {
 
     public void i2b() {
         out.println("\ti2b");
+        out.flush();
+    }
+
+    public void jmp(String s) {
+        out.println("\tjmp\t" + s);
+        out.flush();
+    }
+
+    public void jz(String s) {
+        out.println("\tjz\t" + s);
+        out.flush();
+    }
+
+    public void jnz(String s) {
+        out.println("\tjnz\t" + s);
         out.flush();
     }
 

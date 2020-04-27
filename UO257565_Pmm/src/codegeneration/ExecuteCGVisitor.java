@@ -122,14 +122,56 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Definition,Void>{
         return null;
     }
 
+    /**
+     * execute[[FunctionInvocation: statement -> expression expression*]]()=
+     * value[[(Expression) statement]]()
+     * if(!((Expression)statement.type instanceof VoidType))
+     *      <pop> ((Expression)statement).type.suffix
+     */
     @Override
     public Void visit(FunctionInvocation funi, Definition parameter) {
-        return super.visit(funi, parameter);
+        super.getCodeGenerator().line(funi.getLine());
+        funi.accept(valueCGVisitor, parameter);
+        if(!(funi.getType() instanceof VoidType)){
+            super.getCodeGenerator().pop(funi.getType().suffix());
+        }
+        return null;
     }
 
+    /**
+     * execute[[IfStatement: statement -> expression statement1* statement2*]]()=
+     * int else = cg.getLabel();
+     * int end = cg.getLabel();
+     * value[[ expression ]]()
+     * <jz label> else
+     * for(Statement statement : statement1*)
+     *      execute[[ statement ]]()
+     * <jmp label> end
+     * <label> else <:>
+     * for(Statement statement : statement2*)
+     *      execute[[statement]]()
+     * <label> end <:>
+     */
     @Override
     public Void visit(IfStatement ifs, Definition parameter) {
-        return super.visit(ifs, parameter);
+        super.getCodeGenerator().line(ifs.getLine());
+        super.getCodeGenerator().comment("If");
+        int _else = super.getCodeGenerator().getLabel();
+        int end = super.getCodeGenerator().getLabel();
+        ifs.getCondition().accept(valueCGVisitor, parameter);
+        super.getCodeGenerator().jz("else" + _else);
+        super.getCodeGenerator().comment("if body");
+        for(Statement statement : ifs.getIfStatements()){
+            statement.accept(this, parameter);
+        }
+        super.getCodeGenerator().jmp("end" + end);
+        super.getCodeGenerator().label("else" + _else);
+        super.getCodeGenerator().comment("else body");
+        for(Statement statement : ifs.getElseStatements()){
+            statement.accept(this, parameter);
+        }
+        super.getCodeGenerator().label("end" + end);
+        return null;
     }
 
     /**
@@ -149,9 +191,11 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Definition,Void>{
     }
 
     /**
-     * execute[[ ReturnStatement: statement -> expression]]()=
+     * execute[[ ReturnStatement: statement -> expression]]( functionDefinition)=
      * value[[expression]]()
-     * <ret> expression.type.size funcDefinition.localVariablesBytes functionType.parametersSize
+     * <ret> expression.type.size <,>
+     *       funcDefinition.localVariablesBytes <,>
+     *       functionDefinition.type.parametersSize
      */
     @Override
     public Void visit(ReturnStatement rts, Definition parameter) {
@@ -164,9 +208,34 @@ public class ExecuteCGVisitor extends AbstractCGVisitor<Definition,Void>{
         return null;
     }
 
+    /**
+     * execute[[ WhileStatement: statement -> expression statement*]]()=
+     * int condition = codeGenerator.getLabel();
+     * int end = codeGenerator.getLabel();
+     * <label> condition <:>
+     * value[[ expression ]]()
+     * <jz label> end
+     * for(Statement statement: statement*)
+     *      execute[[ statement ]]()
+     * <jmp label> condition
+     * <label> end <:>
+     */
     @Override
     public Void visit(While whl, Definition parameter) {
-        return super.visit(whl, parameter);
+        super.getCodeGenerator().line(whl.getLine());
+        super.getCodeGenerator().comment("While");
+        int condition = super.getCodeGenerator().getLabel();
+        int end = super.getCodeGenerator().getLabel();
+        super.getCodeGenerator().label("label" + condition);
+        whl.getCondition().accept(valueCGVisitor, parameter);
+        super.getCodeGenerator().jz("label" + end);
+        super.getCodeGenerator().comment("While body");
+        for(Statement statement: whl.getStatements()){
+            statement.accept(this, parameter);
+        }
+        super.getCodeGenerator().jmp("label" + condition);
+        super.getCodeGenerator().label("label" + end);
+        return null;
     }
 
     /**

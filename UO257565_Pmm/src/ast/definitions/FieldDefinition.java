@@ -21,6 +21,11 @@ public class FieldDefinition extends AbstractDefinition implements Statement {
     }
 
     @Override
+    public String toString() {
+        return "Field[name:" + getName() + ",type:" +getType() + " offset:" + getOffset() + "]";
+    }
+
+    @Override
     public <TP, TR> TR accept(Visitor<TP, TR> visitor, TP parameter) {
         return visitor.visit(this, parameter);
     }

@@ -1,11 +1,13 @@
 package codegeneration;
 
 import ast.definitions.Definition;
+import ast.definitions.FieldDefinition;
 import ast.definitions.VariableDefinition;
 import ast.expressions.ArrayAccess;
 import ast.expressions.FieldAccess;
 import ast.expressions.Variable;
 import ast.types.Int;
+import ast.types.Struct;
 
 public class AddressCGVisitor extends AbstractCGVisitor<Definition,Void>{
 
@@ -40,14 +42,36 @@ public class AddressCGVisitor extends AbstractCGVisitor<Definition,Void>{
         return null;
     }
 
+    /**
+     * address[[ ArrayAccess: expression -> expression1 expression2 ]]()=
+     * address[[ expression1 ]]()
+     * value[[ expression2]]()
+     * <push> expression1.elementsSize
+     * <mul> Int.instance.suffix
+     * <add> Int.instance.suffix
+     */
     @Override
     public Void visit(ArrayAccess aa, Definition parameter) {
-        return super.visit(aa, parameter);
+        aa.getArray().accept(this, parameter);
+        aa.getAccessed().accept(valueCGVisitor, parameter);
+        super.getCodeGenerator().pushi(aa.getElementSize());
+        super.getCodeGenerator().mul(Int.getInstance().suffix());
+        super.getCodeGenerator().add(Int.getInstance().suffix());
+        return null;
     }
 
+    /**
+     * address[[ FieldAccess: expression -> expression1 ID]](fieldDefinition)=
+     * address[[ expression1 ]]
+     * <push> ((Struct) expression1.type).getField(ID).getOffset()
+     * <add> Int.instance.suffix
+     */
     @Override
     public Void visit(FieldAccess fila, Definition parameter) {
-        return super.visit(fila, parameter);
+        fila.getAccessed().accept(this, parameter);
+        super.getCodeGenerator().pushi(((Struct) fila.getAccessed().getType()).getField(fila.getField()).getOffset());
+        super.getCodeGenerator().add(Int.getInstance().suffix());
+        return null;
     }
 
 }

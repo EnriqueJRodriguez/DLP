@@ -2,7 +2,9 @@ package codegeneration;
 
 import ast.definitions.Definition;
 import ast.expressions.*;
+import ast.statements.FunctionInvocation;
 import ast.types.Int;
+import ast.types.Struct;
 
 public class ValueCGVisitor extends AbstractCGVisitor<Definition,Void>{
 
@@ -30,9 +32,16 @@ public class ValueCGVisitor extends AbstractCGVisitor<Definition,Void>{
         return null;
     }
 
+    /**
+     * value[[ArrayAccess expression -> expression1 expression2]]()
+     * address[[ expression ]]()
+     * <load> expression.type.suffix
+     */
     @Override
     public Void visit(ArrayAccess aa, Definition parameter) {
-        return super.visit(aa, parameter);
+        aa.accept(addressCGVisitor, parameter);
+        super.getCodeGenerator().load(aa.getType().suffix());
+        return null;
     }
 
     /**
@@ -71,9 +80,16 @@ public class ValueCGVisitor extends AbstractCGVisitor<Definition,Void>{
         return null;
     }
 
+    /**
+     * value[[FieldAccess expression -> expression1 ID]]()=
+     * address[[ expression ]]()
+     * <loadi> ((Struct) expression1.type).getField(ID).type.suffix
+     */
     @Override
     public Void visit(FieldAccess fila, Definition parameter) {
-        return super.visit(fila, parameter);
+        fila.accept(addressCGVisitor, parameter);
+        super.getCodeGenerator().load(((Struct) fila.getAccessed().getType()).getField(fila.getField()).getType().suffix());
+        return null;
     }
 
     /**
@@ -147,6 +163,22 @@ public class ValueCGVisitor extends AbstractCGVisitor<Definition,Void>{
     public Void visit(Variable v, Definition parameter) {
         v.accept(addressCGVisitor, parameter);
         super.getCodeGenerator().load(v.getDefinition().getType().suffix());
+        return null;
+    }
+
+    /**
+     * value[[FunctionInvocation: expression1-> expression2 expression*]]()=
+     * for(Expression arg: expression*)
+     *     value[[arg]]()
+     * <call> expression2.name
+     *
+     */
+    @Override
+    public Void visit(FunctionInvocation funi, Definition parameter) {
+        for(Expression expression: funi.getParameters()){
+            expression.accept(this,parameter);
+        }
+        super.getCodeGenerator().call(funi.getVariable().getName());
         return null;
     }
 }

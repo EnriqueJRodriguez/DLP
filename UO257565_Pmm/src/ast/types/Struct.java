@@ -46,9 +46,15 @@ public class Struct extends AbstractType {
 
     @Override
     public String toString() {
-        return "Struct{" +
-                "fields=" + fields +
-                '}';
+        String result;
+        result = "Struct[fields:";
+        for(int i=0 ; i < fields.size(); i++){
+            result += fields.get(i).toString();
+            if(i != fields.size()-1){
+                result += ",";
+            }
+        }
+        return result;
     }
 
     @Override

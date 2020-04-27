@@ -1,5 +1,6 @@
 package ast.expressions;
 
+import ast.types.ArrayType;
 import ast.types.Type;
 import visitor.Visitor;
 
@@ -32,6 +33,23 @@ public class ArrayAccess extends AbstractExpression {
 
     public Type getArrayType(){
         return array.getType();
+    }
+
+    @Override
+    public Type getType() {
+        Type type = getArrayType();
+        while(type instanceof ArrayType){
+            type = ((ArrayType) type).getType();
+        }
+        return type;
+    }
+
+    public int getElementSize() {
+        Type typeLeftExpression = this.array.getType();
+        if(typeLeftExpression instanceof ArrayType)
+            return ((ArrayType) typeLeftExpression).getType().getSize();
+        else
+            return typeLeftExpression.getSize();
     }
 
     @Override
